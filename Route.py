@@ -71,7 +71,8 @@ def build_full_route(start, pillars, gate, grid):
 
 
 
-def visualize(grid, path, pillars, gate):
+def visualize(grid, path, pillars, gate_centre, gates):
+    plt.clf()
     plt.figure()
 
     
@@ -89,32 +90,49 @@ def visualize(grid, path, pillars, gate):
         plt.text(p[0], p[1], f' Pillar {i+1}')
     
     
-    plt.scatter(gate[0], gate[1])
-    plt.text(gate[0], gate[1], ' Gate')
+    plt.scatter(gate_centre[0], gate_centre[1])
+    #plt.text(gate_centre[0], gate_centre[1], ' Gate Centre')
+    x1_gate=gates[0][0]
+    y1_gate=gates[1][0]
+    x2_gate=gates[0][1]
+    y2_gate=gates[1][1]
+    gate1=[x1_gate,y1_gate]
+    gate2=[x2_gate,y2_gate]
+    plt.plot(gate1,gate2, color='green', linewidth=2)
     
     plt.title("Маршрут A*")
     plt.grid(True)
     plt.show()
 
-grid_size = 10
+grid_size = 30
 grid = np.zeros((grid_size, grid_size))
 
 start = (1, 1)
 
 pillars = [
-    (5, 9),
-    (6,6),
-    (9, 2)
+    (10, 18),
+    (12,12),
+    (18, 10)
 ]
-
-gate = (9, 9)
+gates=[
+    (11,25),
+    (25,15)
+]
+xgate=0
+ygate=0
+for i in gates:
+    xgate=xgate + i[0]
+    ygate=ygate+i[1]
+    grid[i]=1
+gate_centre = (xgate//2, ygate//2)
 
 #grid[5:15, 12] = 1
 
 
 
-path = build_full_route(start, pillars, gate, grid)
+path = build_full_route(start, pillars, gate_centre, grid)
 
 if path:
     print("Длина пути:", len(path))
-    visualize(grid, path, pillars, gate)
+    visualize(grid, path, pillars, gate_centre,gates)
+    print("HI")
