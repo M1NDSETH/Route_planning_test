@@ -104,8 +104,9 @@ def visualize(grid, path, pillars, gate_centre, gates):
     plt.grid(True)
     plt.show()
 
-grid_size = 30
-grid = np.zeros((grid_size, grid_size))
+grid_size_x = 30
+grid_size_y=30
+grid = np.zeros((grid_size_x, grid_size_y))
 
 start = (1, 1)
 
