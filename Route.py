@@ -135,4 +135,4 @@ path = build_full_route(start, pillars, gate_centre, grid)
 if path:
     print("Длина пути:", len(path))
     visualize(grid, path, pillars, gate_centre,gates)
-    print("HI")
+    
