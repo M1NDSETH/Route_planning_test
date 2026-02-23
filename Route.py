@@ -70,7 +70,7 @@ def build_full_route(start, pillars, gate, grid):
         path_segment = astar(current, target, temp_grid)
         
         if path_segment is None:
-            print("Путь не найден!")
+            print("Path not found")
             return None
         
         if full_path:
@@ -114,7 +114,7 @@ def visualize(grid, path, pillars, gate_centre, gates):
     gate2=[x2_gate,y2_gate]
     plt.plot(gate1,gate2, color='green', linewidth=2)
     
-    plt.title("Маршрут A*")
+    plt.title("Route A*")
     plt.grid(True)
     plt.show()
 
@@ -148,6 +148,6 @@ gate_centre = (xgate//2, ygate//2)
 path = build_full_route(start, pillars, gate_centre, grid)
 
 if path:
-    print("Длина пути:", len(path))
+    print("Path length:", len(path))
     visualize(grid, path, pillars, gate_centre,gates)
     
