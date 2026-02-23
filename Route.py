@@ -55,17 +55,31 @@ def build_full_route(start, pillars, gate, grid):
     current = start
     
     targets = pillars + [gate]
-    for target in targets:
-        path_segment = astar(current, target, grid)
+    
+    for i, target in enumerate(targets):
+        
+        
+        temp_grid = grid.copy()
+        
+        
+        if target in pillars:
+            for p in pillars:
+                if p != target:
+                    temp_grid[p] = 1   
+        
+        path_segment = astar(current, target, temp_grid)
+        
         if path_segment is None:
             print("Путь не найден!")
             return None
+        
         if full_path:
             full_path.extend(path_segment[1:])
         else:
             full_path.extend(path_segment)
-        current = target
         
+        current = target
+    
     return full_path
 
 
@@ -105,15 +119,15 @@ def visualize(grid, path, pillars, gate_centre, gates):
     plt.show()
 
 grid_size_x = 30
-grid_size_y=30
+grid_size_y = 30
 grid = np.zeros((grid_size_x, grid_size_y))
 
-start = (1, 1)
+start = (0, 10)
 
 pillars = [
-    (10, 18),
-    (12,12),
-    (18, 10)
+    (18,10),
+    (10,10),
+    (25, 10)
 ]
 gates=[
     (11,25),
