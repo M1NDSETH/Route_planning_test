@@ -63,8 +63,8 @@ def build_full_route(start, pillars, gate, grid):
         
         
         if target in pillars:
-            for p in pillars:
-                if p != target:
+            for j,p in enumerate(pillars):
+                if p != target and j>i:
                     temp_grid[p] = 1   
         
         path_segment = astar(current, target, temp_grid)
