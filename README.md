@@ -12,6 +12,14 @@ The order of targets for the device: pillars in the order of the *pillars* list,
 
 Before starting the program, the user sets the coordinates of the starting point of the device (*start*), the size of the grid of the program (*grid_size_x,grid_size_y*), the coordinates of the pillars and gates.
 
+## PROGRAM OPERATION
+
+After starting work, the program builds the shortest route from the starting point to the pillars and then the gate using the A* algorithm. By default the device can move in 8 directions (*directions* list): 4 along the X and Y axes and 4 at an angle of 45 degrees to the axes. The device moves ONLY through cells with integer coordinates in the grid.
+
+## CUSTOMIZATION
+
+The user can set the starting point of the device, the positions of the pillars and gates, the dimensions of the grid and install the internal walls in the movement space. The wall is set by replacing the cell values with the corresponding coordinates from 0 to 1.
+
 ## VISUALIZATION
 
 The red line on the graph shows the route of the device, the green line shows the goal line, the black squares are the walls or pillars of the gate.
