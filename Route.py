@@ -93,7 +93,7 @@ def main():
     grid_size_y = 30
     grid = np.zeros((grid_size_x, grid_size_y))
 
-    start = (0, 10)
+    start_point = (0, 10)
 
     pillars = [
         (25,10),
@@ -116,7 +116,7 @@ def main():
 
     #grid[5:15, 12] = 1
 
-    path = build_full_route(start, pillars, gate_centre, grid)
+    path = build_full_route(start_point, pillars, gate_centre, grid)
     if path:
         print("Path length:", len(path))
         visualize(grid, path, pillars, gate_centre,gates)
