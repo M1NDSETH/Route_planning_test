@@ -1,7 +1,7 @@
-This program builds the shortest route to the goals with its subsequent visualization and the output of the route length in the coordinates of the program grid.
+This program builds the shortest route to the targets with its subsequent visualization and the output of the route length in the coordinates of the program grid.
 All object coordinates are specified in the program grid, which is not tied to real coordinates.
 
-## GOALS
+## TAGRETS
 
 There are two types of targets: pillars and gates.
 1) PILLARS: designed to be shot down by the device. They are set in the *pillars* list using two coordinates in the program grid. In the list, the pillars are arranged in the order of their passage by the device.
