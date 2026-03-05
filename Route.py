@@ -4,8 +4,11 @@ import numpy as np
 import math
 
 
+
 def heuristic(a, b):
     return math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
+
+
 
 class GRID:
     def __init__(self, x_size, y_size, pillars, gates):
@@ -16,9 +19,11 @@ class GRID:
         self.field=np.zeros((x_size, y_size))
         self.gate_centre=((gates[0][0]+gates[1][0])//2,
                           (gates[0][1]+gates[1][1])//2)
-    def init_gate(self):
-        for i in self.gates:
+        for i in gates:
             self.field[i]=1
+    
+
+
 def astar(start, goal, grid):
     rows, cols = grid.shape
     open_set = []
@@ -51,7 +56,6 @@ def astar(start, goal, grid):
 
 
 
-
 def build_full_route(start, pillars, gate, grid):
     full_path = []
     current = start
@@ -72,7 +76,6 @@ def build_full_route(start, pillars, gate, grid):
             full_path.extend(path_segment)
         current = target
     return full_path
-
 
 
 
@@ -102,9 +105,8 @@ def visualize(grid, path, pillars, gate_centre, gates):
 def main():
     grid_size_x = 30
     grid_size_y = 30
-    #grid = np.zeros((grid_size_x, grid_size_y))
-
-    start_point = (0, 10)
+    
+    start_point = (0, 0)
 
     pillars = [
         (25,10),
@@ -117,17 +119,9 @@ def main():
         (25,15)
     ]
 
-    #xgate=0
-    #ygate=0
-    #for i in gates:
-     #   xgate=xgate + i[0]
-      #  ygate=ygate+i[1]
-       # grid[i]=1
-    #gate_centre = (xgate//2, ygate//2)
-
     #grid[5:15, 12] = 1
     grid = GRID(grid_size_x, grid_size_y, pillars, gates)
-    grid.init_gate()
+    
     path = build_full_route(start_point, grid.pillars, grid.gate_centre, grid.field)
     if path:
         print("Path length:", len(path))
