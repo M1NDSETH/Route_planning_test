@@ -21,7 +21,34 @@ class GRID:
                           (gates[0][1]+gates[1][1])//2)
         for i in gates:
             self.field[i]=1
+
+
+
+class AUV:
+    def __init__(self,start_point):
+        self.start_point=start_point
     
+    def build_full_route(self, pillars, gate, grid):
+        full_path = []
+        current = self.start_point
+        targets = pillars + [gate]
+        for i, target in enumerate(targets):
+            temp_grid = grid.copy()
+            if target in pillars:
+                for j,p in enumerate(pillars):
+                    if p != target and j>i:
+                        temp_grid[p] = 1   
+            path_segment = astar(current, target, temp_grid)
+            if path_segment is None:
+                print("Path not found")
+                return None
+            if full_path:
+                full_path.extend(path_segment[1:])
+            else:
+                full_path.extend(path_segment)
+            current = target
+        return full_path 
+
 
 
 def astar(start, goal, grid):
@@ -56,29 +83,6 @@ def astar(start, goal, grid):
 
 
 
-def build_full_route(start, pillars, gate, grid):
-    full_path = []
-    current = start
-    targets = pillars + [gate]
-    for i, target in enumerate(targets):
-        temp_grid = grid.copy()
-        if target in pillars:
-            for j,p in enumerate(pillars):
-                if p != target and j>i:
-                    temp_grid[p] = 1   
-        path_segment = astar(current, target, temp_grid)
-        if path_segment is None:
-            print("Path not found")
-            return None
-        if full_path:
-            full_path.extend(path_segment[1:])
-        else:
-            full_path.extend(path_segment)
-        current = target
-    return full_path
-
-
-
 def visualize(grid, path, pillars, gate_centre, gates):
     plt.figure()
     plt.imshow(grid.T, origin='lower', cmap='gray_r')
@@ -106,8 +110,6 @@ def main():
     grid_size_x = 30
     grid_size_y = 30
     
-    start_point = (0, 0)
-
     pillars = [
         (25,10),
         (0,25),
@@ -118,11 +120,11 @@ def main():
         (11,25),
         (25,15)
     ]
-
+    VELT=AUV((0,0))
     #grid[5:15, 12] = 1
     grid = GRID(grid_size_x, grid_size_y, pillars, gates)
     
-    path = build_full_route(start_point, grid.pillars, grid.gate_centre, grid.field)
+    path = VELT.build_full_route(grid.pillars, grid.gate_centre, grid.field)
     if path:
         print("Path length:", len(path))
         visualize(grid.field, path, grid.pillars, grid.gate_centre,grid.gates)
