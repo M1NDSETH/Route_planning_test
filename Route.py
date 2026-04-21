@@ -11,39 +11,27 @@ def heuristic(a, b):
 
 
 class GRID:
-    def __init__(self, x_size, y_size, pillars, gates):
-        self.x_size=x_size
-        self.y_size=y_size
-        self.pillars=pillars
-        self.gates=gates
-        self.field=np.zeros((x_size, y_size))
-        self.gate_centre=((gates[0][0]+gates[1][0])//2,
-                          (gates[0][1]+gates[1][1])//2)
-        for i in gates:
-            self.field[i]=1
+    def __init__(self, x_size, y_size, targets):
+        self.x_size = x_size
+        self.y_size = y_size
+        self.targets = targets
+        self.field = np.zeros((x_size, y_size))
+       
 
 
 
 class AUV:
-    def __init__(self,start_point, mission):
+    def __init__(self,start_point):
         self.start_point = start_point
-        self.mission = mission
     
-    def build_full_route(self,pillars, gate, grid):
+    def build_full_route(self,targets, grid):
         full_path = []
         current = self.start_point
-        mission = self.mission
-        if mission == 'p':
-            targets = pillars
-        else:
-            targets = [gate]
-        #targets = pillars + [gate]
         for i, target in enumerate(targets):
             temp_grid = grid.copy()
-            if target in pillars:
-                for j,p in enumerate(pillars):
-                    if p != target and j>i:
-                        temp_grid[p] = 1   
+            for j,p in enumerate(targets):
+                if p != target and j>i:
+                    temp_grid[p] = 1   
             path_segment = astar(current, target, temp_grid)
             if path_segment is None:
                 print("Path not found")
@@ -89,23 +77,15 @@ def astar(start, goal, grid):
 
 
 
-def visualize(grid, path, pillars, gate_centre, gates):
+def visualize(grid, path, targets):
     plt.figure()
     plt.imshow(grid.T, origin='lower', cmap='gray_r')
     x = [p[0] for p in path]
     y = [p[1] for p in path]
     plt.plot(x, y, color='red', linewidth=2)
-    for i, p in enumerate(pillars):
+    for i, p in enumerate(targets):
         plt.scatter(p[0], p[1])
-        plt.text(p[0], p[1], f' Pillar {i+1}')
-    plt.scatter(gate_centre[0], gate_centre[1])
-    x1_gate=gates[0][0]
-    y1_gate=gates[1][0]
-    x2_gate=gates[0][1]
-    y2_gate=gates[1][1]
-    gate1=[x1_gate,y1_gate]
-    gate2=[x2_gate,y2_gate]
-    plt.plot(gate1,gate2, color='green', linewidth=2)
+        plt.text(p[0], p[1], f' Target {i+1}')
     plt.title("Route A*")
     plt.grid(True)
     plt.show()
@@ -119,23 +99,17 @@ def main():
     pillars = [
         (25,10),
         (0,25),
-        (0, 0)
+        (12, 12)
     ]
-    
-    mission = 'g'
-
-    gates=[
-        (11,25),
-        (25,15)
-    ]
-    VELT=AUV((0,0),mission)
+   
+    VELT=AUV((0,0))
     #grid[5:15, 12] = 1
-    grid = GRID(grid_size_x, grid_size_y, pillars, gates)
+    grid = GRID(grid_size_x, grid_size_y, pillars)
     
-    path = VELT.build_full_route(grid.pillars, grid.gate_centre, grid.field)
+    path = VELT.build_full_route(grid.targets, grid.field)
     if path:
         print("Path length:", len(path))
-        visualize(grid.field, path, grid.pillars, grid.gate_centre,grid.gates)
+        visualize(grid.field, path, grid.targets)
         return 0
     else:
         return 1
