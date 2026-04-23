@@ -9,6 +9,33 @@ def heuristic(a, b):
     return math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
 
+def bresenham(x0,y0,x1,y1):
+    cells =[]
+    dx = abs(x1-x0)
+    dy = abs(y1-y0)
+    Sx = 1 if x0<x1 else -1
+    Sy = 1 if y0<y1 else -1
+    err = dx - dy
+    while True:
+        cells.append((x0,y0))
+        if x0 == x1 and y0 == y1:
+            break
+        local_err = 2 * err
+        if local_err > -dy:
+            err -= dy
+            x0 += Sx
+        if local_err < dx:
+            err += dx
+            y0 += Sy
+    return cells
+
+
+def line_of_sight(grid, x0, y0, x1, y1):
+    for (x,y) in bresenham(x0, y0, x1, y1):
+        if grid[x][y] == 1:
+            return False
+        return True
+
 
 class GRID:
     def __init__(self, x_size, y_size, targets, obstacles):
@@ -19,7 +46,6 @@ class GRID:
         for point in obstacles:
             self.field[point] = 1
        
-
 
 
 class AUV:
@@ -92,32 +118,4 @@ def visualize(grid, path, targets):
     plt.grid(True)
     plt.show()
 
-
-
-def main():
-    grid_size_x = 30
-    grid_size_y = 30
-    
-    obstacles = []
-
-    pillars = [
-        (25,10),
-        (0,25),
-        (12, 12)
-    ]
-   
-    VELT=AUV((0,0))
-    #grid[5:15, 12] = 1
-    grid = GRID(grid_size_x, grid_size_y, pillars, obstacles)
-    
-    path = VELT.build_full_route(grid.targets, grid.field)
-    if path:
-        print("Path length:", len(path))
-        visualize(grid.field, path, grid.targets)
-        return 0
-    else:
-        return 1
-
-if __name__ == "__main__":
-    main()
     
