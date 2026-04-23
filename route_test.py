@@ -1,4 +1,4 @@
-from Route import AUV,GRID,visualize
+from Route import AUV,GRID,visualize,bresenham
 import random
 def main():
     grid_size_x = 30
@@ -18,7 +18,7 @@ def main():
     if path:
         print("Path length:", len(path))
         visualize(grid.field, path, grid.targets)
-    print(pillars)
-    print(obstacles)
-for i in range(4):
-    main()
+    #print(pillars)
+    #print(obstacles)
+    print(bresenham(1,1,5,6))
+main()
