@@ -44,12 +44,16 @@ class GRID:
         self.targets = targets
         self.obstacles = obstacles
         self.field = np.zeros((x_size, y_size))
-    def grid_creation(self,auv_size):
+    def obstacles_creation(self,auv_size):
         for point in self.obstacles:
-            for i in range(self.x_size):
-                for j in range(self.y_size):
-                    if heuristic((i,j),point) <= auv_size:
-                        self.field[i][j] = 1
+            i=point[0]-auv_size
+            while i<=point[0]+auv_size and i<self.x_size:
+                j = point[1]-auv_size
+                while j<=point[1]+auv_size and j<self.y_size:
+                        if heuristic((i,j),point) <= auv_size:
+                            self.field[i][j] = 1
+                        j+=1
+                i+=1
             self.field[point] = 1
        
         
